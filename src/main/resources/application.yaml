@@ -3,3 +3,6 @@ spring:
     name: example
 server:
   port: 8081
+synapsys:
+  neuron:
+    core-url: http://localhost:50166
