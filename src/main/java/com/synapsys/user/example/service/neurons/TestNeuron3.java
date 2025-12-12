@@ -6,11 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SynapsysNeuron
-public class TestNeuron implements SynapsysNeuronContract {
+public class TestNeuron3 implements SynapsysNeuronContract {
 
     @Override
     public String getName() {
-        return "test neuron";
+        return "test neuron 3";
     }
 
     @Override
