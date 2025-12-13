@@ -15,7 +15,15 @@ public class TestNeuron1 implements SynapsysNeuronContract {
 
     @Override
     public void start() {
-        log.info("Test Neuron: the process has started");
+        int milliseconds = 10000;
+        log.info("{}: start entered", this.getName());
+        try {
+            log.info("{}: sleeping for {} milliseconds",this.getName(), milliseconds);
+            Thread.sleep(milliseconds);
+            log.info(" {}: awakening", this.getName());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
