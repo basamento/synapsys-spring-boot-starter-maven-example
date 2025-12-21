@@ -1,0 +1,1 @@
+$COUNT=1000; $OUT="src/main/java/com/synapsys/user/example/service/neurons"; $TPL="src/main/resources/templates/TestNeuron.tpl"; New-Item -ItemType Directory -Force -Path $OUT | Out-Null; for ($i=1; $i -le $COUNT; $i++) { (Get-Content $TPL) -replace "{{N}}", $i | Set-Content "$OUT/TestNeuron$i.java" }

@@ -1,9 +1,9 @@
 spring:
   application:
-    name: example
+    name: springboot-user-1
 server:
   port: 8081
 synapsys:
-  neuron:
-    core-url: http://localhost:50166
-    heartbeat-interval-ms: 1000
+  core-url: http://localhost:8080
+  heartbeat-interval-ms: 5000
+  application-name: application 1
