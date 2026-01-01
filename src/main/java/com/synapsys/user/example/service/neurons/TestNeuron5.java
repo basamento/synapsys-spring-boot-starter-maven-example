@@ -10,15 +10,28 @@ public class TestNeuron5 extends AbstractSynapsysNeuron {
 
     @Override
     public void run() {
-        int milliseconds = 10000;
+        int steps = 100;
+        long workPerStep = 10_000_00L; // increase to slow it down more
+
         log.info("{}: start entered", this.getName());
-        try {
-            log.info("{}: sleeping for {} milliseconds", this.getName(), milliseconds);
-            Thread.sleep(milliseconds);
-            log.info("{}: awakening", this.getName());
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+
+        for (int step = 1; step <= steps; step++) {
+
+            // Heavy computation chunk
+            double sink = 0;
+            for (long i = 0; i < workPerStep; i++) {
+                sink += Math.sqrt(i) * Math.sin(i);
+            }
+
+            // Same-line console update
+            System.out.print(
+                "\r" + this.getName() + ": computing... " + step + "% complete"
+            );
+            System.out.flush();
         }
+
+        System.out.println();
+        log.info("{}: computation finished", this.getName());
     }
 
     @Override
