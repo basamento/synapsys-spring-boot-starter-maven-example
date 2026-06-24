@@ -1,0 +1,1 @@
+$COUNT=100; $OUT="src/main/java/com/synapsys/user/example/service/processes/progressive"; $TPL="src/main/resources/templates/TestProgressiveProcess.tpl"; New-Item -ItemType Directory -Force -Path $OUT | Out-Null; for ($i=1; $i -le $COUNT; $i++) { (Get-Content $TPL) -replace "{{N}}", $i | Set-Content "$OUT/TestProgressiveProcess$i.java" }
