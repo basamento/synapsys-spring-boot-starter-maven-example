@@ -5,5 +5,9 @@ server:
   port: 8081
 synapsys:
   core-url: http://localhost:8080
-  heartbeat-interval-ms: 5000
-  application-name: application 1
+  # Duration syntax (5s, 500ms, 1m). The old "heartbeat-interval-ms" key bound to
+  # nothing and was silently ignored.
+  heartbeat-interval: 5s
+  # Falls back to spring.application.name when omitted. The old key was
+  # "application-name", which the starter never read.
+  worker-name: springboot-user-1
