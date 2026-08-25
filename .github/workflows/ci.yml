@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: JMarzoli/synapsys-springboot-starter
+          path: synapsys-springboot-starter
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Install starter snapshot
+        working-directory: synapsys-springboot-starter
+        run: bash ./mvnw -B clean install
+      - name: Test example
+        run: bash ./mvnw -B clean test
