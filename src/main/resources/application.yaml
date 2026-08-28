@@ -1,10 +1,11 @@
 spring:
   application:
-    name: springboot-user-1
+    name: spring-boot-maven-user-1
 server:
   port: 8081
 synapsys:
-  core-url: http://localhost:8080
+  core-url: https://core.synapsys.sandbox.jmzworks.it
+  core-token: syn_JZUSFz3J9Cw_Axg8smJLCSUjYZcwjFyzzEUnueG5AOdJrJT4u9eXupY
   # Duration syntax (5s, 500ms, 1m). The old "heartbeat-interval-ms" key bound to
   # nothing and was silently ignored.
   heartbeat-interval: 5s

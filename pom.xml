@@ -45,9 +45,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.synapsys</groupId>
-			<artifactId>synapsys-springboot-starter</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<groupId>org.basamento.synapsys</groupId>
+			<artifactId>synapsys-spring-boot-starter</artifactId>
+			<version>0.1.0</version>
 		</dependency>
 	</dependencies>
 
