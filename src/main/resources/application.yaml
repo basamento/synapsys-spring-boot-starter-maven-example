@@ -11,4 +11,4 @@ synapsys:
   heartbeat-interval: 5s
   # Falls back to spring.application.name when omitted. The old key was
   # "application-name", which the starter never read.
-  worker-name: springboot-user-1
+  worker-name: spring-boot-maven-user-1
