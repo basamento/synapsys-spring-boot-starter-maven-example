@@ -1,25 +1,48 @@
 name: CI
 
+# Runs on main and on pull requests. Triggering on every branch push as well
+# would double the minutes spent on any branch that has a PR open.
 on:
   push:
+    branches: [main]
+    paths-ignore: ['**.md']
   pull_request:
+    paths-ignore: ['**.md']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
-        with:
-          repository: JMarzoli/synapsys-springboot-starter
-          path: synapsys-springboot-starter
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
+          # Lombok's annotation processing is version-sensitive; this matches
+          # <java.version> in the pom.
           java-version: '21'
           cache: maven
-      - name: Install starter snapshot
-        working-directory: synapsys-springboot-starter
-        run: bash ./mvnw -B clean install
-      - name: Test example
+
+      # The starter is resolved from Maven Central, like any other dependency.
+      #
+      # This job used to check out the starter's source into a second directory and
+      # `mvn install` it as a snapshot first, which was necessary before it was
+      # published. It is not any more, and it had stopped working: the checkout
+      # named a repository that no longer exists under that owner, and even the
+      # correct one would fail, because the default GITHUB_TOKEN is scoped to the
+      # repository running the workflow and cannot read a private one next door.
+      # Cross-repo checkout of a private repository needs a PAT — which is a
+      # credential this example has no reason to hold.
+      #
+      # `bash ./mvnw` rather than `./mvnw`: the wrapper is committed without the
+      # executable bit.
+      - name: Test against the published starter
         run: bash ./mvnw -B clean test
