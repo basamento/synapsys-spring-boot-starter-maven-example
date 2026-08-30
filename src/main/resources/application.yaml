@@ -4,7 +4,7 @@ spring:
 server:
   port: 8081
 synapsys:
-  core-url: https://core.synapsys.sandbox.jmzworks.it
+  core-url: http://localhost:8080
   core-token: syn_replace_with_a_worker_token
   # Duration syntax (5s, 500ms, 1m). The old "heartbeat-interval-ms" key bound to
   # nothing and was silently ignored.
