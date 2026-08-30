@@ -12,3 +12,13 @@ synapsys:
   # Falls back to spring.application.name when omitted. The old key was
   # "application-name", which the starter never read.
   worker-name: spring-boot-maven-user-1
+
+  # How long shutdown waits for running processes to become terminal before it
+  # reports them and finishes. SlowStopperProcess and UncancellableBatchProcess
+  # outlast a short budget on purpose, which is what the warning is for: the
+  # starter never kills a thread it does not own.
+  shutdown-timeout: 10s
+
+  # Set false to keep remote start/stop while leaving System.out and System.err
+  # untouched. Process output then stays local instead of being streamed to Core.
+  capture-console: true

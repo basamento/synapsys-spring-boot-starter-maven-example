@@ -115,6 +115,44 @@ protocol is identical; what a runtime can get away with is not.
 sets a flag and unblocks waiting; it cannot force a return from a loop that never
 looks at it. Cancellation is cooperative in every Synapsys client.
 
+## Shutdown
+
+Stopping the application (Ctrl-C, or `SIGTERM` from a container runtime) runs the
+starter's bounded cooperative shutdown:
+
+1. the heartbeat loop stops;
+2. every running process is asked to stop;
+3. the starter waits up to `synapsys.shutdown-timeout` (10s here) for them to become
+   terminal;
+4. one best-effort final heartbeat reports the final states and any queued log lines,
+   and the commands in its response are ignored;
+5. `System.out` and `System.err` are restored.
+
+Two processes here are worth stopping the application while they run:
+
+- **`slow-stopper`** takes several seconds to notice its stop signal, so you see the
+  starter waiting for it and then reporting it as terminal.
+- **`uncancellable-batch`** neither polls its stop signal nor honours an interrupt. It
+  outlasts the budget on purpose, and the starter says so:
+
+  ```
+  [Synapsys] WARN Process 'uncancellable-batch' did not stop before the shutdown
+  timeout | it is still running and will not be replaced by a new execution
+  ```
+
+  It is **not** killed. Java cannot safely stop a thread it does not own, so the
+  starter reports it, keeps observing it, and refuses to start a replacement run over
+  the top of it. The decision to wait longer or exit is the application's.
+
+## Start while stopping
+
+Stop `uncancellable-batch` from the Core console and immediately press Start again.
+The starter **defers** the new start rather than acknowledging it: the old run's
+`runId` stays in place, the token stays unacknowledged, and Core redelivers the
+command until the old run is terminal — at which point the new run actually happens.
+Acknowledging that start as a no-op, as older versions did, would have told Core the
+run had happened when nothing ran.
+
 ## Configuration
 
 | Property | Default | Description |
@@ -125,6 +163,8 @@ looks at it. Cancellation is cooperative in every Synapsys client.
 | `synapsys.enabled` | `true` | `false` disables heartbeats and console capture entirely. |
 | `synapsys.heartbeat-interval` | `5s` | Whole seconds. |
 | `synapsys.fail-fast` | `false` | Fail startup when Core is unreachable. |
+| `synapsys.shutdown-timeout` | `10s` | How long shutdown waits for running processes to become terminal. |
+| `synapsys.capture-console` | `true` | Stream process output to Core. `false` leaves `System.out` untouched while keeping remote start/stop. |
 
 Unknown `synapsys.*` keys fail startup rather than being ignored, so a typo surfaces
 immediately.
