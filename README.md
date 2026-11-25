@@ -168,3 +168,7 @@ run had happened when nothing ran.
 
 Unknown `synapsys.*` keys fail startup rather than being ignored, so a typo surfaces
 immediately.
+
+## License
+
+Apache License 2.0. See [LICENSE](LICENSE).
